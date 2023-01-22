@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/ayushanand/Downloads/Projects practice/Dapp University/blockchain-developer-bootcamp/contracts/Token.sol": {
-      "lastModificationDate": 1674349417585,
-      "contentHash": "b33b520778bd332735857f967b010399",
+      "lastModificationDate": 1674352432503,
+      "contentHash": "93744b4d2ca08f27cc49af8d73f05484",
       "sourceName": "contracts/Token.sol",
       "solcConfig": {
         "version": "0.8.9",
