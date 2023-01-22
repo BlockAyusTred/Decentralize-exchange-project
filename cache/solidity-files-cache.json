@@ -72,6 +72,41 @@
       "artifacts": [
         "console"
       ]
+    },
+    "/Users/ayushanand/Downloads/Projects practice/Dapp University/blockchain-developer-bootcamp/contracts/Exchange.sol": {
+      "lastModificationDate": 1674408908904,
+      "contentHash": "a3db6af3f86e55cdd82afe3909d21b6f",
+      "sourceName": "contracts/Exchange.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "Exchange"
+      ]
     }
   }
 }
