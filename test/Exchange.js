@@ -84,4 +84,59 @@ describe("Exchange", function () {
       });
     });
   });
+
+  describe("Withdrawing Tokens", () => {
+    let transaction, result;
+    let amount = tokens(10);
+
+    describe("Success", () => {
+      beforeEach(async () => {
+        // DEPOSIT TOKENS BEFORE WITHDRAWING
+        // Approve Token
+        transaction = await token1
+          .connect(user1)
+          .approve(exchange.address, amount);
+        result = await transaction.wait();
+        // Deposit Token
+        transaction = await exchange
+          .connect(user1)
+          .depositToken(token1.address, amount);
+        result = await transaction.wait();
+        // Withdraw Token
+        transaction = await exchange
+          .connect(user1)
+          .withdrawToken(token1.address, amount);
+        result = await transaction.wait();
+      });
+
+      it("tracks the token withdrawl", async () => {
+        expect(await token1.balanceOf(exchange.address)).to.be.equal(0);
+        expect(await exchange.tokens(token1.address, user1.address)).to.equal(
+          0
+        );
+        expect(
+          await exchange.balanceOf(token1.address, user1.address)
+        ).to.equal(0);
+      });
+
+      it("emits a withdrawl event", async () => {
+        const event = result.events[1]; // 2 events are emited
+        // console.log(event);
+        expect(event.event).to.equal("Withdrawl");
+        const args = event.args;
+        expect(args.token).to.equal(token1.address);
+        expect(args.user).to.equal(user1.address);
+        expect(args.amount).to.equal(amount);
+        expect(args.balance).to.equal(0);
+      });
+    });
+
+    describe("Failure ", () => {
+      it("fails when insufficient balance", async () => {
+        await expect(
+          exchange.connect(user1).withdrawToken(token1.address, amount)
+        ).to.be.reverted;
+      });
+    });
+  });
 });
