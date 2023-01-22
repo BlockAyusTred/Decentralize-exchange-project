@@ -74,8 +74,8 @@
       ]
     },
     "/Users/ayushanand/Downloads/Projects practice/Dapp University/blockchain-developer-bootcamp/contracts/Exchange.sol": {
-      "lastModificationDate": 1674408908904,
-      "contentHash": "a3db6af3f86e55cdd82afe3909d21b6f",
+      "lastModificationDate": 1674412272959,
+      "contentHash": "36fe106784245861a1149500e7cbd529",
       "sourceName": "contracts/Exchange.sol",
       "solcConfig": {
         "version": "0.8.9",
@@ -100,7 +100,9 @@
           }
         }
       },
-      "imports": [],
+      "imports": [
+        "./Token.sol"
+      ],
       "versionPragmas": [
         "^0.8.0"
       ],
