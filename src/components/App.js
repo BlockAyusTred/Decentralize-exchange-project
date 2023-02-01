@@ -8,6 +8,7 @@ import {
   loadTokens,
   loadExchange
 } from "../store/interactions";
+import Navbar from './Navbar';
 
 function App() {
   const dispatch = useDispatch();
@@ -19,8 +20,15 @@ function App() {
     // Fetch current network's chainId
     const chainId = await loadNetwork(provider, dispatch);
 
-    // Fetch current account & balance from Metamask
-    await loadAccount(provider, dispatch);
+    // Reload page when network changes
+    window.ethereum.on('chainChanged', () => {
+      window.location.reload()
+    })
+
+    // Fetch current account & balance from Metamask when user changes metamask account
+    window.ethereum.on('accountsChanged', () => {
+      loadAccount(provider, dispatch);
+    })
 
     // Load Token Smart Contract
     const Dapp = config[chainId].Dapp
@@ -38,7 +46,7 @@ function App() {
 
   return (
     <div>
-      {/* Navbar */}
+      <Navbar />
 
       <main className="exchange grid">
         <section className="exchange__section--left grid">
