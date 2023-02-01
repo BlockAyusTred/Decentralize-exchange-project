@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import TOKEN_ABI from "../abis/Token.json";
-// import EXCHANGE_ABI from "../abis/Exchange.json";
-
+import EXCHANGE_ABI from "../abis/Exchange.json";
 
 // ---------------------------------------------------------------------------
 
@@ -21,7 +20,7 @@ export const loadNetwork = async (provider, dispatch) => {
 };
 // ---------------------------------------------------------------------------
 
-export const loadAccount = async (dispatch) => {
+export const loadAccount = async (provider, dispatch) => {
   const accounts = await window.ethereum.request({
     method: "eth_requestAccounts",
   });
@@ -29,19 +28,34 @@ export const loadAccount = async (dispatch) => {
 
   dispatch({ type: "ACCOUNT_LOADED", account });
 
+  let balance = await provider.getBalance(account);
+  balance = ethers.utils.formatEther(balance);
+
+  dispatch({ type: "ETHER_BALANCE_LOADED", balance });
+
   return account;
 };
 // ---------------------------------------------------------------------------
 
-export const loadToken = async (provider, address, dispatch) => {
-  let token, symbol
+// load pairs of tokens
+export const loadTokens = async (provider, addresses, dispatch) => {
+  let token, symbol;
 
-  token = new ethers.Contract(address, TOKEN_ABI, provider)
-  symbol = await token.symbol()
+  token = new ethers.Contract(addresses[0], TOKEN_ABI, provider);
+  symbol = await token.symbol();
+  dispatch({ type: "TOKEN_1_LOADED", token, symbol });
 
-  dispatch({ type: "TOKEN_LOADED", token, symbol });
+  token = new ethers.Contract(addresses[1], TOKEN_ABI, provider);
+  symbol = await token.symbol();
+  dispatch({ type: "TOKEN_2_LOADED", token, symbol });
 
   return token;
 };
 // ---------------------------------------------------------------------------
 
+export const loadExchange = async (provider, address, dispatch) => {
+  const exchange = new ethers.Contract(address, EXCHANGE_ABI, provider);
+  dispatch({ type: "EXCHANGE_LOADED", exchange });
+
+  return exchange;
+};
