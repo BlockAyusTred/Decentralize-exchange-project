@@ -36,8 +36,6 @@ const Markets = () => {
           <p>Not deployed to network</p>
         </div>
       )}
-      
-
       <hr />
     </div>
   );
