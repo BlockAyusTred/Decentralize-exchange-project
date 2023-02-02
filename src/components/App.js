@@ -7,11 +7,12 @@ import {
   loadAccount,
   loadTokens,
   loadExchange,
-  subscribeToEvents
+  subscribeToEvents,
 } from "../store/interactions";
-import Navbar from './Navbar';
-import Markets from './Markets';
-import Balance from './Balance';
+import Navbar from "./Navbar";
+import Markets from "./Markets";
+import Balance from "./Balance";
+import Order from "./Order";
 
 function App() {
   const dispatch = useDispatch();
@@ -24,23 +25,27 @@ function App() {
     const chainId = await loadNetwork(provider, dispatch);
 
     // Reload page when network changes
-    window.ethereum.on('chainChanged', () => {
-      window.location.reload()
-    })
+    window.ethereum.on("chainChanged", () => {
+      window.location.reload();
+    });
 
     // Fetch current account & balance from Metamask when user changes metamask account
-    window.ethereum.on('accountsChanged', () => {
+    window.ethereum.on("accountsChanged", () => {
       loadAccount(provider, dispatch);
-    })
+    });
 
     // Load Token Smart Contract
-    const Dapp = config[chainId].Dapp
-    const mETH = config[chainId].mETH
+    const Dapp = config[chainId].Dapp;
+    const mETH = config[chainId].mETH;
     await loadTokens(provider, [Dapp.address, mETH.address], dispatch);
 
     // Load Exchange Smart Contract
-    const exchangeConfig = config[chainId].exchange
-    const exchange = await loadExchange(provider, exchangeConfig.address, dispatch);
+    const exchangeConfig = config[chainId].exchange;
+    const exchange = await loadExchange(
+      provider,
+      exchangeConfig.address,
+      dispatch
+    );
 
     // Listen to events
     subscribeToEvents(exchange, dispatch);
@@ -56,12 +61,11 @@ function App() {
 
       <main className="exchange grid">
         <section className="exchange__section--left grid">
-
           <Markets />
 
           <Balance />
 
-          {/* Order */}
+          <Order />
         </section>
         <section className="exchange__section--right grid">
           {/* PriceChart */}
